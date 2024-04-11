@@ -1,0 +1,22 @@
+#chatBox {
+    -fx-background-color: #f0f0f0;
+}
+
+#messageInput {
+    -fx-background-color: #7c7c7c;
+    -fx-text-fill: #000000;
+}
+
+#sendButton {
+    -fx-background-color: #008000;
+    -fx-text-fill: #ffffff;
+}
+
+.message-bubble {
+    -fx-background-color: #a5d6a7;
+    -fx-background-radius: 10px;
+    -fx-padding: 10px;
+    -fx-wrap-text: true;
+    -fx-text-fill: black;
+    -fx-border-radius: 10px;
+}

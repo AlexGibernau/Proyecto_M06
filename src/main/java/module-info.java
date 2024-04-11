@@ -10,6 +10,7 @@ module org.agc.proyecto_m06_m09 {
     requires org.kordamp.bootstrapfx.core;
     requires eu.hansolo.tilesfx;
     requires com.almasb.fxgl.all;
+    requires annotations;
 
     opens org.agc.proyecto_m06_m09 to javafx.fxml;
     exports org.agc.proyecto_m06_m09;
