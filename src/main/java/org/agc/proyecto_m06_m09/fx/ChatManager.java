@@ -1,5 +1,7 @@
-package org.agc.proyecto_m06_m09;
+package org.agc.proyecto_m06_m09.fx;
 
+import org.agc.proyecto_m06_m09.bbdd.ChatRegistry;
+import org.agc.proyecto_m06_m09.bbdd.Message;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.List;
@@ -22,8 +24,8 @@ public class ChatManager {
 
     // TODO Should post message to database
     // TODO Should send message to other users
-    public static void postMessage(@NotNull String message) {
-        Message msg = new Message(currentUser, message);
+    public static void postMessage(String receiver, @NotNull String message) {
+        Message msg = new Message(currentUser, receiver, message);
         ChatRegistry.MESSAGES.add(msg);
     }
 }

@@ -1,17 +1,15 @@
-package org.agc.proyecto_m06_m09;
+package org.agc.proyecto_m06_m09.fx;
 
 import javafx.fxml.FXML;
-import javafx.fxml.Initializable;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Label;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.control.TextArea;
 import javafx.scene.input.KeyCode;
 import javafx.scene.layout.VBox;
+import org.agc.proyecto_m06_m09.bbdd.Message;
 
-import java.net.URL;
 import java.util.List;
-import java.util.ResourceBundle;
 
 public class ChatController {
     @FXML
@@ -43,7 +41,7 @@ public class ChatController {
             return;
         }
 
-        ChatManager.postMessage(message);
+        ChatManager.postMessage("Ana Lisa Melano",message);
 
         loadMessage(message);
         messageInput.clear();

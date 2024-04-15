@@ -9,7 +9,7 @@ public class ChatApplication extends Application {
 
     @Override
     public void start(Stage primaryStage) throws Exception {
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("chat-view.fxml"));
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("fx/chat-view.fxml"));
         Scene scene = new Scene(loader.load(), 600, 400);
 
         primaryStage.setScene(scene);

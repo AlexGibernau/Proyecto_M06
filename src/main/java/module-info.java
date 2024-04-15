@@ -14,4 +14,8 @@ module org.agc.proyecto_m06_m09 {
 
     opens org.agc.proyecto_m06_m09 to javafx.fxml;
     exports org.agc.proyecto_m06_m09;
+    exports org.agc.proyecto_m06_m09.bbdd;
+    opens org.agc.proyecto_m06_m09.bbdd to javafx.fxml;
+    exports org.agc.proyecto_m06_m09.fx;
+    opens org.agc.proyecto_m06_m09.fx to javafx.fxml;
 }
