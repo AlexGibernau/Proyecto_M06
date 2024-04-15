@@ -7,7 +7,7 @@ import javafx.scene.control.ScrollPane;
 import javafx.scene.control.TextArea;
 import javafx.scene.input.KeyCode;
 import javafx.scene.layout.VBox;
-import org.agc.proyecto_m06_m09.bbdd.Message;
+import org.agc.proyecto_m06_m09.data.Message;
 
 import java.util.List;
 

@@ -1,4 +1,4 @@
-package org.agc.proyecto_m06_m09.bbdd;
+package org.agc.proyecto_m06_m09.data;
 
 import java.time.LocalDateTime;
 

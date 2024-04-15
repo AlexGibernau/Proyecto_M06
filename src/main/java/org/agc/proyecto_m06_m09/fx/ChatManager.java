@@ -1,7 +1,7 @@
 package org.agc.proyecto_m06_m09.fx;
 
-import org.agc.proyecto_m06_m09.bbdd.ChatRegistry;
-import org.agc.proyecto_m06_m09.bbdd.Message;
+import org.agc.proyecto_m06_m09.data.ChatRegistry;
+import org.agc.proyecto_m06_m09.data.Message;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.List;
