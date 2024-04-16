@@ -16,9 +16,9 @@ public class ChatService extends Service {
 
     @Override
     public void handleConnection(Socket socket) throws IOException {
-        if (/*new user*/) {
+        if (!User.exist()) {
             // Create new user in DDBB
-            DatabaseConnection.createNewUser(/*username from socket*/socket.);
+            DatabaseConnection.createNewUser(User.getName()/*username from socket*/);
         }
     }
 }

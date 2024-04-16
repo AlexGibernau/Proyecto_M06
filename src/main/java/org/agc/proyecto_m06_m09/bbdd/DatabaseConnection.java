@@ -13,20 +13,34 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 public class DatabaseConnection {
+    private boolean exist = false;
     private static final EntityManagerFactory entityManagerFactory = Persistence.createEntityManagerFactory("default");
     private static final EntityManager em = entityManagerFactory.createEntityManager();
 
+    public static User getUser(String username) {
 
-    public static void createNewUser(String username) {
-        EntityTransaction transaction = em.getTransaction();
-        transaction.begin();
-
-        User user = new User();
-        user.setNombre(username);
-        em.persist(user);
-
-        transaction.commit();
     }
+
+
+    public static boolean createNewUser(String username) {
+        EntityTransaction transaction = em.getTransaction();
+
+        if (em.find(User.class, username) == null) {
+            transaction.begin();
+            User user = new User();
+            user.setNombre(username);
+            em.persist(user);
+            transaction.commit();
+            return true;
+        }
+        else {
+            getUser(username);
+        }
+
+        return false;
+    }
+
+
     public static void creteNewMessage(String message, int userFrom, int userTo, LocalDateTime time) {
         EntityTransaction transaction = em.getTransaction();
         transaction.begin();
