@@ -41,7 +41,7 @@ public class ChatController {
             return;
         }
 
-        ChatManager.postMessage("Ana Lisa Melano",message);
+        ChatManager.postMessage("Ana Lisa Melano", message);
 
         loadMessage(message);
         messageInput.clear();

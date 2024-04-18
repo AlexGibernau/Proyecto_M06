@@ -14,7 +14,8 @@ public class Client {
     private BufferedReader in;
     private PrintWriter out;
 
-    private Client() {}
+    private Client() {
+    }
 
     public static void initClient() {
         if (INSTANCE == null) {

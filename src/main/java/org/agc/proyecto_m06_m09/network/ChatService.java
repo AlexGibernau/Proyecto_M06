@@ -1,6 +1,7 @@
 package org.agc.proyecto_m06_m09.network;
 
 import org.agc.proyecto_m06_m09.bbdd.DatabaseConnection;
+import org.agc.proyecto_m06_m09.bbdd.User;
 
 import java.io.IOException;
 import java.net.ServerSocket;
@@ -16,9 +17,7 @@ public class ChatService extends Service {
 
     @Override
     public void handleConnection(Socket socket) throws IOException {
-        if (!User.exist()) {
-            // Create new user in DDBB
-            DatabaseConnection.createNewUser(User.getName()/*username from socket*/);
-        }
+
+        User user;
     }
 }
