@@ -1,6 +1,5 @@
 package org.agc.proyecto_m06_m09.network;
 
-import org.agc.proyecto_m06_m09.bbdd.DatabaseConnection;
 import org.agc.proyecto_m06_m09.bbdd.User;
 
 import java.io.IOException;

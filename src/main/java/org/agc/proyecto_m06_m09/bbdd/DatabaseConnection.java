@@ -1,54 +1,95 @@
 package org.agc.proyecto_m06_m09.bbdd;
 
-import jakarta.persistence.EntityManagerFactory;
-import jakarta.persistence.EntityManager;
-import jakarta.persistence.EntityTransaction;
-import jakarta.persistence.Persistence;
+import jakarta.persistence.*;
 
-import java.time.LocalDateTime;
+import java.time.LocalDate;
+import java.util.List;
 
 public class DatabaseConnection {
-    private static final EntityManagerFactory entityManagerFactory = Persistence.createEntityManagerFactory("default");
+    private static final EntityManagerFactory entityManagerFactory =
+            Persistence.createEntityManagerFactory("default");
     private static final EntityManager em = entityManagerFactory.createEntityManager();
 
     public static User getUser(String username) {
-        return em.find(User.class, username);
+        User user = null;
+        try {
+            user = em.createQuery("SELECT u FROM User u WHERE u.name = :username", User.class)
+                    .setParameter("username", username)
+                    .getSingleResult();
+        } catch (NoResultException ignored) {}
+
+        return user;
     }
 
     public static boolean createNewUser(String username) {
         EntityTransaction transaction = em.getTransaction();
-
-        if (em.find(User.class, username) == null) {
-            transaction.begin();
-            User user = new User();
-            user.setNombre(username);
-            em.persist(user);
-            transaction.commit();
-            return true;
-        } else {
-            getUser(username);
+        try {
+            if (getUser(username) == null) {
+                transaction.begin();
+                User user = new User();
+                user.setName(username);
+                em.persist(user);
+                transaction.commit();
+                return true;
+            } else {
+                return false;
+            }
+        } catch (Exception e) {
+            if (transaction.isActive()) {
+                transaction.rollback();
+            }
+            e.printStackTrace();
+            return false;
         }
-
-        return false;
     }
 
-
-    public static void createNewMessage(String message, User userFrom, User userTo, LocalDateTime time) {
+    public static boolean deleteUser(String username) {
         EntityTransaction transaction = em.getTransaction();
-        transaction.begin();
-        Mensaje mensaje = new Mensaje();
-        mensaje.setIdUserSender(userFrom);
-        mensaje.setIdUserReciver(userTo);
-        mensaje.setText(message);
-        mensaje.setDateTime(time);
-        em.persist(message);
+        try {
+            return true;
+        } catch (Exception e) {
+            if (transaction.isActive()) {
+                transaction.rollback();
+            }
+            e.printStackTrace();
+            return false;
+        }
     }
 
-    public static void getAllMessages(User user) {
-        em.createQuery(
-                        "SELECT * FROM mensajes m WHERE m.ID_USER_SENDER = :userid OR m.ID_USER_RECIVER = userid"
-                )
-                .setParameter("userid", user.getId())
-                .getResultList();
+    public static boolean createNewMessage(String body, User userFrom, User userTo, LocalDate time) {
+        EntityTransaction transaction = em.getTransaction();
+        try {
+            transaction.begin();
+
+            Message message = new Message();
+            message.setIdFrom(userFrom);
+            message.setIdTo(userTo);
+            message.setMessage(body);
+            message.setDateTime(time.toString());
+
+            em.persist(message);
+            transaction.commit();
+
+            return true;
+        } catch (Exception e) {
+            if (transaction.isActive()) {
+                transaction.rollback();
+            }
+            e.printStackTrace();
+            return false;
+        }
+    }
+
+    public static List getAllMessages(User user) {
+        List messages = null;
+        try {
+            messages = em.createQuery(
+                            "SELECT m FROM Message m WHERE m.idFrom = :userid OR m.idTo = :userid"
+                    )
+                    .setParameter("userid", user)
+                    .getResultList();
+        } catch (NoResultException ignored) {}
+
+        return messages;
     }
 }

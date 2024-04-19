@@ -1,30 +1,33 @@
 package org.agc.proyecto_m06_m09.bbdd;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 
 @Entity
 @Table(name = "USERS")
 public class User {
     @Id
-    @Column(name = "ID", nullable = false)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "USERS_SEQ")
+    @SequenceGenerator(name = "USERS_SEQ", sequenceName = "USERS_SEQ", allocationSize = 1)
+    @Column(name = "ID")
     private Long id;
 
-    @Column(name = "NOMBRE", length = 100)
-    private String nombre;
+    @Column(name = "NAME", length = 100)
+    private String name;
 
     public Long getId() {
         return id;
     }
 
-    public String getNombre() {
-        return nombre;
+    public void setId(Long id) {
+        this.id = id;
     }
 
-    public void setNombre(String nombre) {
-        this.nombre = nombre;
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
     }
 
 }
