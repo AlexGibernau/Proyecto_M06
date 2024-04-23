@@ -25,7 +25,7 @@ class DatabaseConnectionTest {
 
     @Test
     void getAllMessages() {
-        User user = DatabaseConnection.getUser("Alex");
+        User user = DatabaseConnection.getUser("Adri");
         List messages = DatabaseConnection.getAllMessages(user);
 
         if (user != null) {
@@ -44,16 +44,16 @@ class DatabaseConnectionTest {
     @Test
     @Disabled(insertMessage)
     void createNewUser() {
-        assertTrue(DatabaseConnection.createNewUser("Pol"));
+        assertTrue(DatabaseConnection.createNewUser("Adri"));
     }
 
     @Test
     @Disabled(insertMessage)
     void createNewMessage() {
         User user1 = DatabaseConnection.getUser("Alex");
-        User user2 = DatabaseConnection.getUser("Pol");
+        User user2 = DatabaseConnection.getUser("Adri");
 
-        assertTrue(DatabaseConnection.createNewMessage("hey",user2,user1, LocalDate.now()));
+        assertTrue(DatabaseConnection.createNewMessage("Pepino",user2,user1, LocalDate.now()));
     }
 
     // DELETE //

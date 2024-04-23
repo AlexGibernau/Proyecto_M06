@@ -4,20 +4,17 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.PrintWriter;
-import java.net.ServerSocket;
 import java.net.Socket;
 
 public abstract class Service {
     protected BufferedReader reader;
     protected PrintWriter writer;
 
-    public static void onStartService(ServerSocket serverSocket) {
-        System.out.println("Service started at port: " + serverSocket.getLocalPort());
-    }
-
     public void onConnection(Socket socket) throws IOException {
         reader = new BufferedReader(new InputStreamReader(socket.getInputStream()));
         writer = new PrintWriter(socket.getOutputStream(), true);
+
+        System.out.println();
 
         handleConnection(socket);
 
