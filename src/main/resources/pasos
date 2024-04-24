@@ -1,22 +1,3 @@
-    dns.adguard.com
+Ahora mismo solo queda hacer que los mensajes y los usuarios lo reciba el fxml
 
-    1. Diseño de la interfaz de usuario con JavaFX:
-            Crea una interfaz de usuario que permita a los usuarios iniciar sesión, ver la lista de contactos, enviar y recibir mensajes, etc.
-            Utiliza controles como TextField, Button, ListView, etc., para construir la interfaz.
-
-    2. Implementación de la comunicación entre usuarios remotos con sockets multifil:
-            Crea una clase de servidor que escuche las conexiones entrantes de los clientes y gestione las comunicaciones entre ellos.
-            Crea una clase de cliente que se conecte al servidor y maneje la comunicación con otros clientes.
-
-    3. Persistencia de datos con JPA:
-            Define las entidades de base de datos necesarias para almacenar la información del usuario y las conversaciones.
-            Utiliza anotaciones JPA para mapear las clases de entidad a las tablas de la base de datos.
-            Configura la unidad de persistencia en tu aplicación para que utilice la base de datos Oracle y las clases de entidad que has definido.
-
-    4. Implementación del almacenamiento de conversaciones en la base de datos:
-            Cuando los usuarios intercambien mensajes, guarda esos mensajes en la base de datos utilizando JPA.
-            Implementa la funcionalidad para recuperar y mostrar las conversaciones almacenadas en la base de datos en la interfaz de usuario.
-
-    5. Generación automática de tablas y objetos de base de datos:
-            Utiliza las capacidades de JPA para generar automáticamente las tablas y otros objetos de base de datos necesarios según las definiciones de tus clases de entidad.
-            Asegúrate de que esta funcionalidad esté correctamente configurada para trabajar con tu servidor Oracle instalado.
+Hay que hacer de nuevo el cliente y el chatmanager

@@ -2,6 +2,7 @@ package org.agc.proyecto_m06_m09.bbdd;
 
 import jakarta.persistence.*;
 
+import java.io.IOException;
 import java.time.LocalDate;
 import java.util.List;
 
@@ -34,19 +35,6 @@ public class DatabaseConnection {
             } else {
                 return false;
             }
-        } catch (Exception e) {
-            if (transaction.isActive()) {
-                transaction.rollback();
-            }
-            e.printStackTrace();
-            return false;
-        }
-    }
-
-    public static boolean deleteUser(String username) {
-        EntityTransaction transaction = em.getTransaction();
-        try {
-            return true;
         } catch (Exception e) {
             if (transaction.isActive()) {
                 transaction.rollback();

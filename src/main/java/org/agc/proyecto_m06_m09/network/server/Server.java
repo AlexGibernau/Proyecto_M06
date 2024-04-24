@@ -1,11 +1,8 @@
-package org.agc.proyecto_m06_m09.network;
+package org.agc.proyecto_m06_m09.network.server;
 
 import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.function.Supplier;
 
 public class Server<S extends Service> {
     private final ServiceFactory<S> serviceFactory;

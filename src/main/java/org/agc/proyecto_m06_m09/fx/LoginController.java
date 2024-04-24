@@ -6,7 +6,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
-import org.agc.proyecto_m06_m09.network.Client;
+import org.agc.proyecto_m06_m09.network.client.Client;
 
 import java.awt.*;
 

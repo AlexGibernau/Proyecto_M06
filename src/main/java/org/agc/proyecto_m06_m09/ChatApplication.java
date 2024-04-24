@@ -4,7 +4,7 @@ import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
-import org.agc.proyecto_m06_m09.network.Client;
+import org.agc.proyecto_m06_m09.network.client.Client;
 
 // Run this file to launch client app
 public class ChatApplication extends Application {

@@ -1,4 +1,4 @@
-package org.agc.proyecto_m06_m09.network;
+package org.agc.proyecto_m06_m09.network.server;
 
 public class ChatServiceFactory extends ServiceFactory<ChatService> {
 

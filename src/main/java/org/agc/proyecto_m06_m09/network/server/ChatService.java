@@ -1,8 +1,9 @@
-package org.agc.proyecto_m06_m09.network;
+package org.agc.proyecto_m06_m09.network.server;
 
 import org.agc.proyecto_m06_m09.bbdd.DatabaseConnection;
 import org.agc.proyecto_m06_m09.bbdd.Message;
 import org.agc.proyecto_m06_m09.bbdd.User;
+import org.agc.proyecto_m06_m09.network.protocol.Protocol;
 
 import java.io.IOException;
 import java.net.Socket;
@@ -22,27 +23,44 @@ public class ChatService extends Service {
         return user;
     }
 
-    private static void sendMessageTo(User user, Message message) {
-        ChatService chatService = services
-                .stream()
-                .filter(service -> service.getUser().equals(user))
-                .findFirst()
-                .orElse(null);
+    @Override
+    public void handleConnection(Socket socket) throws IOException {
+        boolean validAction = true;
+        do {
+            String action = reader.readLine();
 
-        chatService.sendMessage(message);
+            switch (action) {
+                case Protocol.LOGIN -> handleLogin();
+                case Protocol.SEND_MESSAGE -> handleMessage();
+                case Protocol.LOGOUT -> handleLogout();
+
+                case null, default -> validAction = false;
+            }
+        } while (validAction);
     }
 
     @Override
-    public void handleConnection(Socket socket) throws IOException {
-        String username = reader.readLine();
-//        User user = DatabaseConnection.getUser(username);
-
-//        if (user == null) {
-//            user = register(username);
-//        }
-
-        sendChats();
+    public void onError(Socket socket, IOException e) {
+        super.onError(socket, e);
+        try {
+            socket.close();
+        } catch (IOException ex) {
+            throw new RuntimeException(ex);
+        }
     }
+
+
+    private void handleLogin() throws IOException {
+        String username = reader.readLine();
+        User user = DatabaseConnection.getUser(username);
+    }
+
+    private void handleMessage() {
+    }
+
+    private void handleLogout() {
+    }
+
 
     private User register(String username) {
         boolean created = DatabaseConnection.createNewUser(username);
@@ -61,6 +79,6 @@ public class ChatService extends Service {
     }
 
     private void receiveMessage(Message message) {
-        sendMessageTo(message.getIdTo(), message);
+//        sendMessageTo(message.getIdTo(), message);
     }
 }

@@ -1,4 +1,4 @@
-package org.agc.proyecto_m06_m09.network;
+package org.agc.proyecto_m06_m09.network.client;
 
 import java.io.*;
 import java.net.Socket;
@@ -32,6 +32,13 @@ public class Client {
             socket = new Socket(SERVER_IP, SERVER_PORT);
         } catch (IOException e) {
             System.err.println("Error connecting to server: " + e.getMessage());
+        }
+    }
+    public void closeUser(String username){
+        try {
+            socket.close();
+        } catch (IOException e) {
+            throw new RuntimeException(e);
         }
     }
 

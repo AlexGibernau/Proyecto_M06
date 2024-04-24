@@ -1,12 +1,17 @@
 package org.agc.proyecto_m06_m09.fx;
 
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Label;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.control.TextArea;
 import javafx.scene.input.KeyCode;
 import javafx.scene.layout.VBox;
+import javafx.stage.Stage;
 import org.agc.proyecto_m06_m09.data.Message;
 
 import java.util.List;
@@ -65,5 +70,16 @@ public class ChatController {
         messages.forEach(this::loadMessage);
 
         chatScrollPane.setVvalue(1d);
+    }
+    @FXML
+    private void logout(ActionEvent event){
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("logout.fxml"));
+            Parent root = loader.load();
+            Stage currentStage = (Stage) ((javafx.scene.Node) event.getSource()).getScene().getWindow();
+            currentStage.setScene(new Scene(root));
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 }
