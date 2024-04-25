@@ -9,6 +9,7 @@
         <URL value="@styles.css" />
     </stylesheets>
     <children>
+        <Button fx:id="refreshButton" alignment="CENTER" contentDisplay="CENTER" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minWidth="-Infinity" onAction="#refresh" text="Refrescar" textAlignment="CENTER" HBox.hgrow="ALWAYS" />
         <ScrollPane fx:id="chatScrollPane" fitToWidth="true" VBox.vgrow="ALWAYS">
             <content>
                 <VBox fx:id="chatBox" />

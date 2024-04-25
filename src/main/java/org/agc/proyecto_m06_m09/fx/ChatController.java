@@ -82,4 +82,9 @@ public class ChatController {
             e.printStackTrace();
         }
     }
+
+    @FXML
+    private void refresh(ActionEvent event) {
+        loadChatMessages();
+    }
 }
