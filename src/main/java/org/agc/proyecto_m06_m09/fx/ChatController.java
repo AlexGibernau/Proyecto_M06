@@ -1,5 +1,6 @@
 package org.agc.proyecto_m06_m09.fx;
 
+import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -55,7 +56,7 @@ public class ChatController {
         Message message = new Message();
         message.setMessage(text);
         message.setIdFrom(Client.getInstance().getUser().getId());
-        message.setIdTo(4L); // Hardcoded value until chat management is done
+        message.setIdTo(6L); // Hardcoded value until chat management is done
         message.setDateTime(System.currentTimeMillis());
 
         Client.getInstance().sendMessage(message);
@@ -82,21 +83,25 @@ public class ChatController {
         loadChatMessages();
     }
 
+    private void loadChatMessages() {
+        chatBox.getChildren().clear();
+        new Thread(() -> {
+            List<Message> messages = Client.getInstance().refresh();
+            messages.forEach(this::loadMessage);
+
+            Platform.runLater(() -> chatScrollPane.setVvalue(1d));
+        }).start();
+    }
+
     private void loadMessage(Message message) {
         loadMessage(message.getMessage());
     }
 
     private void loadMessage(String message) {
-        Label messageLabel = new Label(message);
-        messageLabel.getStyleClass().add("message-bubble");
-        chatBox.getChildren().add(messageLabel);
-    }
-
-
-    private void loadChatMessages() throws IOException {
-        List<Message> messages = Client.getInstance().refresh();
-        messages.forEach(this::loadMessage);
-
-        chatScrollPane.setVvalue(1d);
+        Platform.runLater(() -> {
+            Label messageLabel = new Label(message);
+            messageLabel.getStyleClass().add("message-bubble");
+            chatBox.getChildren().add(messageLabel);
+        });
     }
 }

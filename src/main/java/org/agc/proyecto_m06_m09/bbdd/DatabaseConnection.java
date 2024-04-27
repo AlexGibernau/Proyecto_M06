@@ -76,7 +76,7 @@ public class DatabaseConnection {
             messages = em.createQuery(
                             "SELECT m FROM Message m WHERE m.idFrom = :userid OR m.idTo = :userid", Message.class
                     )
-                    .setParameter("userid", user)
+                    .setParameter("userid", user.getId())
                     .getResultList();
         } catch (NoResultException e) {
             e.printStackTrace();

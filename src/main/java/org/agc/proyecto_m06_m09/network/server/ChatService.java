@@ -7,6 +7,7 @@ import org.agc.proyecto_m06_m09.network.protocol.Protocol;
 
 import java.io.IOException;
 import java.net.Socket;
+import java.util.List;
 
 
 public class ChatService extends Service {
@@ -43,10 +44,14 @@ public class ChatService extends Service {
         }
 
         user = DatabaseConnection.getUser(username);
+        writer.println(user);
     }
 
     private void handleGetMessages() throws IllegalArgumentException, IOException {
-        DatabaseConnection.getAllMessages(user).forEach(writer::println);
+        List<Message> messages = DatabaseConnection.getAllMessages(user);
+        System.out.println(messages.size());
+
+        messages.forEach(writer::println);
         writer.println(Protocol.RESPONSE_END);
     }
 

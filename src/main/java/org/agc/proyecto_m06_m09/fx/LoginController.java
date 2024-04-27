@@ -20,7 +20,9 @@ public class LoginController {
         if (username.getText().trim().isEmpty()) {
             return;
         }
+
         Client.getInstance().login(username.getText());
+        System.out.println("Logged in, attempting to load scene");
 
         try {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("chat-view.fxml"));
@@ -30,6 +32,5 @@ public class LoginController {
         } catch (Exception e) {
             e.printStackTrace();
         }
-
     }
 }

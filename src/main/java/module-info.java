@@ -13,6 +13,7 @@ module org.agc.proyecto_m06_m09 {
     requires annotations;
     requires jakarta.persistence;
     requires java.desktop;
+    requires org.hibernate.orm.core;
 
     opens org.agc.proyecto_m06_m09;
     opens org.agc.proyecto_m06_m09.bbdd;

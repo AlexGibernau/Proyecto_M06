@@ -8,7 +8,7 @@ import java.util.regex.Pattern;
 
 @Entity
 @Table(name = "MESSAGES")
-public class Message {
+public class Message implements Comparable<Message> {
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "MESSAGES_SEQ")
     @SequenceGenerator(name = "MESSAGES_SEQ", sequenceName = "MESSAGES_SEQ", allocationSize = 1)
@@ -29,7 +29,7 @@ public class Message {
 
     public static Message from(String stringifiedMessage) throws IllegalArgumentException {
         Message message = new Message();
-        Pattern pattern = Pattern.compile("Message\\{idFrom=(\\d+), idTo=(\\d+), message='(.*?)', dateTime='(\\d)'\\}");
+        Pattern pattern = Pattern.compile("Message\\{idFrom=(\\d+), idTo=(\\d+), message='(.*?)', dateTime='(\\d+)'\\}");
         Matcher matcher = pattern.matcher(stringifiedMessage);
 
         if (matcher.find()) {
@@ -81,6 +81,11 @@ public class Message {
 
     public void setDateTime(Long dateTime) {
         this.dateTime = dateTime;
+    }
+
+    @Override
+    public int compareTo(Message o) {
+        return Long.compare(this.getDateTime(), o.getDateTime());
     }
 
     @Override

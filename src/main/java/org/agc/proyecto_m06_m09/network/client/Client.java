@@ -22,9 +22,7 @@ public class Client {
     private BufferedReader reader;
     private PrintWriter writer;
 
-    private Client() {
-        connectClient();
-    }
+    private Client() {}
 
     public static void initClient() {
         if (INSTANCE == null) {
@@ -41,19 +39,25 @@ public class Client {
     }
 
     public void login(String username) throws IOException {
+        connectClient();
         writeLines(Protocol.LOGIN, username);
+
         String stringifiedUser = reader.readLine();
-        System.out.println(stringifiedUser);
         user = User.from(stringifiedUser);
     }
 
-    public List<Message> refresh() throws IOException {
+    public List<Message> refresh() {
+        writer.println(Protocol.GET_MESSAGES);
         List<Message> messages = new ArrayList<>();
 
         String line;
-        while (!(line = reader.readLine()).equals(Protocol.RESPONSE_END)) {
-            Message message = Message.from(line);
-            messages.add(message);
+        try {
+            while (!(line = reader.readLine()).equals(Protocol.RESPONSE_END)) {
+                Message message = Message.from(line);
+                messages.add(message);
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
         }
 
         return messages;
