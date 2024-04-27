@@ -5,10 +5,10 @@ import java.util.List;
 
 // CLASE TEMPORAL PARA SUSTITUIR LA BASE DE DATOS
 public class ChatRegistry {
-    public static final List<Message> MESSAGES = new ArrayList<>();
+    public static final List<MessageData> MESSAGES = new ArrayList<>();
 
     static {
-        MESSAGES.add(new Message("Carlos Soplete", "Ana Mena", "Buenas socio"));
-        MESSAGES.add(new Message("Ana Mena", "Carlos Soplete", "Si"));
+        MESSAGES.add(new MessageData("Carlos Soplete", "Ana Mena", "Buenas socio"));
+        MESSAGES.add(new MessageData("Ana Mena", "Carlos Soplete", "Si"));
     }
 }

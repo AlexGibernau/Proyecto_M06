@@ -2,13 +2,13 @@ package org.agc.proyecto_m06_m09.data;
 
 import java.time.LocalDateTime;
 
-public class Message implements Comparable<Message> {
+public class MessageData implements Comparable<MessageData> {
     private final String user;
     private final String receiver;
     private final String message;
     private final LocalDateTime time;
 
-    public Message(String user, String receiver, String message) {
+    public MessageData(String user, String receiver, String message) {
         this.user = user;
         this.receiver = receiver;
         this.message = message;
@@ -32,7 +32,7 @@ public class Message implements Comparable<Message> {
     }
 
     @Override
-    public int compareTo(Message other) {
+    public int compareTo(MessageData other) {
         return time.compareTo(other.time);
     }
 

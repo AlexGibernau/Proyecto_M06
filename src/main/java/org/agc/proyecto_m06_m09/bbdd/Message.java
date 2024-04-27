@@ -1,6 +1,10 @@
+
 package org.agc.proyecto_m06_m09.bbdd;
 
 import jakarta.persistence.*;
+
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 @Entity
 @Table(name = "MESSAGES")
@@ -11,20 +15,34 @@ public class Message {
     @Column(name = "ID", nullable = false)
     private Long id;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "ID_FROM", referencedColumnName = "ID")
-    private User idFrom;
+    @Column(name = "ID_FROM")
+    private Long idFrom;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "ID_TO", referencedColumnName = "ID")
-    private User idTo;
+    @Column(name = "ID_TO")
+    private Long idTo;
 
     @Column(name = "MESSAGE")
     private String message;
 
     @Column(name = "DATE_TIME", length = 30)
-    private String dateTime;
+    private long dateTime;
 
+    public static Message from(String stringifiedMessage) throws IllegalArgumentException {
+        Message message = new Message();
+        Pattern pattern = Pattern.compile("Message\\{idFrom=(\\d+), idTo=(\\d+), message='(.*?)', dateTime='(\\d)'\\}");
+        Matcher matcher = pattern.matcher(stringifiedMessage);
+
+        if (matcher.find()) {
+            message.setIdFrom(Long.parseLong(matcher.group(1)));
+            message.setIdTo(Long.parseLong(matcher.group(2)));
+            message.setMessage(matcher.group(3));
+            message.setDateTime(Long.parseLong(matcher.group(4)));
+        } else {
+            throw new IllegalArgumentException("Invalid message: " + stringifiedMessage);
+        }
+
+        return message;
+    }
     public Long getId() {
         return id;
     }
@@ -33,19 +51,19 @@ public class Message {
         this.id = id;
     }
 
-    public User getIdFrom() {
+    public Long getIdFrom() {
         return idFrom;
     }
 
-    public void setIdFrom(User idFrom) {
+    public void setIdFrom(Long idFrom) {
         this.idFrom = idFrom;
     }
 
-    public User getIdTo() {
+    public Long getIdTo() {
         return idTo;
     }
 
-    public void setIdTo(User idTo) {
+    public void setIdTo(Long idTo) {
         this.idTo = idTo;
     }
 
@@ -57,19 +75,18 @@ public class Message {
         this.message = message;
     }
 
-    public String getDateTime() {
+    public Long getDateTime() {
         return dateTime;
     }
 
-    public void setDateTime(String dateTime) {
+    public void setDateTime(Long dateTime) {
         this.dateTime = dateTime;
     }
 
     @Override
     public String toString() {
         return "Message{" +
-                "id=" + id +
-                ", idFrom=" + idFrom +
+                "idFrom=" + idFrom +
                 ", idTo=" + idTo +
                 ", message='" + message + '\'' +
                 ", dateTime='" + dateTime + '\'' +

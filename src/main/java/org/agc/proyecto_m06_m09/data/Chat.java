@@ -3,9 +3,9 @@ package org.agc.proyecto_m06_m09.data;
 import java.util.List;
 
 public class Chat implements Comparable<Chat> {
-    private List<Message> messages;
+    private List<MessageData> messages;
 
-    public Message getLastMessage() {
+    public MessageData getLastMessage() {
         return messages.get(messages.size() - 1);
     }
 

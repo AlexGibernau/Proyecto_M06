@@ -2,8 +2,6 @@ package org.agc.proyecto_m06_m09.bbdd;
 
 import jakarta.persistence.*;
 
-import java.io.IOException;
-import java.time.LocalDate;
 import java.util.List;
 
 public class DatabaseConnection {
@@ -17,34 +15,38 @@ public class DatabaseConnection {
             user = em.createQuery("SELECT u FROM User u WHERE u.name = :username", User.class)
                     .setParameter("username", username)
                     .getSingleResult();
-        } catch (NoResultException ignored) {}
+        } catch (NoResultException ignored) {
+        }
 
+        if (user == null) {
+            createNewUser(username);
+            return getUser(username);
+        }
         return user;
     }
 
-    public static boolean createNewUser(String username) {
+    public static void createNewUser(String username) {
         EntityTransaction transaction = em.getTransaction();
         try {
-            if (getUser(username) == null) {
-                transaction.begin();
-                User user = new User();
-                user.setName(username);
-                em.persist(user);
-                transaction.commit();
-                return true;
-            } else {
-                return false;
-            }
+            transaction.begin();
+            User user = new User();
+            user.setName(username);
+            em.persist(user);
+            transaction.commit();
+
         } catch (Exception e) {
             if (transaction.isActive()) {
                 transaction.rollback();
             }
             e.printStackTrace();
-            return false;
         }
     }
 
-    public static boolean createNewMessage(String body, User userFrom, User userTo, LocalDate time) {
+    public static boolean createNewMessage(Message message) {
+        return createNewMessage(message.getMessage(), message.getIdFrom(), message.getIdTo(), message.getDateTime());
+    }
+
+    public static boolean createNewMessage(String body, Long userFrom, Long userTo, Long time) {
         EntityTransaction transaction = em.getTransaction();
         try {
             transaction.begin();
@@ -53,7 +55,7 @@ public class DatabaseConnection {
             message.setIdFrom(userFrom);
             message.setIdTo(userTo);
             message.setMessage(body);
-            message.setDateTime(time.toString());
+            message.setDateTime(time);
 
             em.persist(message);
             transaction.commit();
@@ -69,14 +71,16 @@ public class DatabaseConnection {
     }
 
     public static List getAllMessages(User user) {
-        List messages = null;
+        List<Message> messages = null;
         try {
             messages = em.createQuery(
-                            "SELECT m FROM Message m WHERE m.idFrom = :userid OR m.idTo = :userid"
+                            "SELECT m FROM Message m WHERE m.idFrom = :userid OR m.idTo = :userid", Message.class
                     )
                     .setParameter("userid", user)
                     .getResultList();
-        } catch (NoResultException ignored) {}
+        } catch (NoResultException e) {
+            e.printStackTrace();
+        }
 
         return messages;
     }

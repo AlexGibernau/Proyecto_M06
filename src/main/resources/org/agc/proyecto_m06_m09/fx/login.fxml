@@ -9,9 +9,9 @@
             <children>
                 <Label text="Indica tu nombre" />
             <Separator opacity="0.0" orientation="VERTICAL" prefHeight="200.0" />
-                <TextField />
+                <TextField fx:id="username" promptText="Alex" />
             <Separator opacity="0.0" orientation="VERTICAL" prefHeight="200.0" />
-                <Button mnemonicParsing="false" text="Login" onAction="#handleButtonAction"/>
+                <Button mnemonicParsing="false" onAction="#handleButtonAction" text="Login" />
             </children>
         </VBox>
     </children>

@@ -5,17 +5,23 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.TextField;
 import javafx.stage.Stage;
 import org.agc.proyecto_m06_m09.network.client.Client;
 
-import java.awt.*;
+import java.io.IOException;
 
 public class LoginController {
     @FXML
     private TextField username;
 
     @FXML
-    private void handleButtonAction(ActionEvent event) {
+    private void handleButtonAction(ActionEvent event) throws IOException {
+        if (username.getText().trim().isEmpty()) {
+            return;
+        }
+        Client.getInstance().login(username.getText());
+
         try {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("chat-view.fxml"));
             Parent root = loader.load();
@@ -25,6 +31,5 @@ public class LoginController {
             e.printStackTrace();
         }
 
-        Client.getInstance().connectUser(username.getText());
     }
 }

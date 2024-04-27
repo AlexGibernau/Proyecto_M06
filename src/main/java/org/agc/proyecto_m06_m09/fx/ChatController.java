@@ -12,8 +12,10 @@ import javafx.scene.control.TextArea;
 import javafx.scene.input.KeyCode;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
-import org.agc.proyecto_m06_m09.data.Message;
+import org.agc.proyecto_m06_m09.bbdd.Message;
+import org.agc.proyecto_m06_m09.network.client.Client;
 
+import java.io.IOException;
 import java.util.List;
 
 public class ChatController {
@@ -25,19 +27,23 @@ public class ChatController {
     private TextArea messageInput;
 
     @FXML
-    public void initialize() {
+    public void initialize() throws IOException {
         loadChatMessages();
         messageInput.setOnKeyPressed(event -> {
             if (event.getCode() == KeyCode.ENTER) {
-                sendMessage();
+                try {
+                    sendMessage();
+                } catch (IOException e) {
+                    throw new RuntimeException(e);
+                }
             }
         });
     }
 
     @FXML
-    protected void sendMessage() {
-        String message = messageInput.getText().trim();
-        if (message.isEmpty()) {
+    protected void sendMessage() throws IOException {
+        String text = messageInput.getText().trim();
+        if (text.isEmpty()) {
             Alert alert = new Alert(Alert.AlertType.WARNING);
             alert.setTitle("Error");
             alert.setHeaderText(null);
@@ -46,34 +52,22 @@ public class ChatController {
             return;
         }
 
-        ChatManager.postMessage("Ana Lisa Melano", message);
+        Message message = new Message();
+        message.setMessage(text);
+        message.setIdFrom(Client.getInstance().getUser().getId());
+        message.setIdTo(4L); // Hardcoded value until chat management is done
+        message.setDateTime(System.currentTimeMillis());
 
-        loadMessage(message);
+        Client.getInstance().sendMessage(message);
         messageInput.clear();
         chatScrollPane.setVvalue(1d);
     }
 
-    private void loadMessage(Message message) {
-        loadMessage(message.getMessage());
-    }
-
-    private void loadMessage(String message) {
-        // TODO Set max width properly
-        Label messageLabel = new Label(message);
-        messageLabel.getStyleClass().add("message-bubble");
-        chatBox.getChildren().add(messageLabel);
-    }
-
-
-    private void loadChatMessages() {
-        List<Message> messages = ChatManager.loadChatMessages();
-        messages.forEach(this::loadMessage);
-
-        chatScrollPane.setVvalue(1d);
-    }
     @FXML
     private void logout(ActionEvent event){
         try {
+            Client.getInstance().logout();
+
             FXMLLoader loader = new FXMLLoader(getClass().getResource("logout.fxml"));
             Parent root = loader.load();
             Stage currentStage = (Stage) ((javafx.scene.Node) event.getSource()).getScene().getWindow();
@@ -84,7 +78,25 @@ public class ChatController {
     }
 
     @FXML
-    private void refresh(ActionEvent event) {
+    private void refresh(ActionEvent event) throws IOException {
         loadChatMessages();
+    }
+
+    private void loadMessage(Message message) {
+        loadMessage(message.getMessage());
+    }
+
+    private void loadMessage(String message) {
+        Label messageLabel = new Label(message);
+        messageLabel.getStyleClass().add("message-bubble");
+        chatBox.getChildren().add(messageLabel);
+    }
+
+
+    private void loadChatMessages() throws IOException {
+        List<Message> messages = Client.getInstance().refresh();
+        messages.forEach(this::loadMessage);
+
+        chatScrollPane.setVvalue(1d);
     }
 }

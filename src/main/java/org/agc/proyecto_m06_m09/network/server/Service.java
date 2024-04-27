@@ -11,15 +11,18 @@ public abstract class Service {
     protected PrintWriter writer;
 
     public void onConnection(Socket socket) throws IOException {
-        reader = new BufferedReader(new InputStreamReader(socket.getInputStream()));
-        writer = new PrintWriter(socket.getOutputStream(), true);
+        try {
+            reader = new BufferedReader(new InputStreamReader(socket.getInputStream()));
+            writer = new PrintWriter(socket.getOutputStream(), true);
 
-        System.out.println();
-
-        handleConnection(socket);
-
-        reader.close();
-        writer.close();
+            handleConnection(socket);
+        } catch (IOException e) {
+            e.printStackTrace();
+        } finally {
+            if (reader != null) reader.close();
+            if (writer != null) writer.close();
+            if (socket != null) socket.close();
+        }
     }
 
     public abstract void handleConnection(Socket socket) throws IOException;
@@ -27,12 +30,12 @@ public abstract class Service {
     public void onError(Socket socket, IOException e) {
         System.out.println("Service error: " + e.getMessage());
 
-        if (socket != null) {
-            try {
-                socket.close();
-            } catch (IOException closeException) {
-                System.err.println("Error closing socket: " + closeException.getMessage());
-            }
+        try {
+            if (reader != null) reader.close();
+            if (writer != null) writer.close();
+            if (socket != null) socket.close();
+        } catch (IOException closeException) {
+            closeException.printStackTrace();
         }
     }
 }

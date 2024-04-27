@@ -7,78 +7,60 @@ import org.agc.proyecto_m06_m09.network.protocol.Protocol;
 
 import java.io.IOException;
 import java.net.Socket;
-import java.util.ArrayList;
-import java.util.List;
+
 
 public class ChatService extends Service {
-    private static final List<ChatService> services = new ArrayList<>();
-
     private User user;
 
-    public ChatService() {
-        services.add(this);
-    }
-
-    public User getUser() {
-        return user;
-    }
-
     @Override
-    public void handleConnection(Socket socket) throws IOException {
-        boolean validAction = true;
-        do {
-            String action = reader.readLine();
-
-            switch (action) {
-                case Protocol.LOGIN -> handleLogin();
-                case Protocol.SEND_MESSAGE -> handleMessage();
-                case Protocol.LOGOUT -> handleLogout();
-
-                case null, default -> validAction = false;
-            }
-        } while (validAction);
-    }
-
-    @Override
-    public void onError(Socket socket, IOException e) {
-        super.onError(socket, e);
+    public void handleConnection(Socket socket) {
+        String action;
         try {
-            socket.close();
-        } catch (IOException ex) {
-            throw new RuntimeException(ex);
+            while ((action = reader.readLine()) != null) {
+                switch (action) {
+                    case Protocol.LOGIN -> handleLogin();
+                    case Protocol.GET_MESSAGES -> handleGetMessages();
+                    case Protocol.SEND_MESSAGE -> handleMessage();
+                    case Protocol.LOGOUT -> {
+                        handleLogout();
+                        return;
+                    }
+                    default -> throw new IllegalArgumentException("Invalid action: " + action);
+                }
+            }
+        } catch (IllegalArgumentException e) {
+            System.err.println(e.getMessage());
+        } catch (IOException e) {
+            System.err.println(e.getMessage());
+            throw new RuntimeException(e);
         }
     }
 
-
-    private void handleLogin() throws IOException {
+    private void handleLogin() throws IllegalArgumentException, IOException {
         String username = reader.readLine();
-        User user = DatabaseConnection.getUser(username);
+        if (username == null) {
+            throw new IllegalArgumentException("Username not specified");
+        }
+
+        user = DatabaseConnection.getUser(username);
     }
 
-    private void handleMessage() {
+    private void handleGetMessages() throws IllegalArgumentException, IOException {
+        DatabaseConnection.getAllMessages(user).forEach(writer::println);
+        writer.println(Protocol.RESPONSE_END);
     }
 
+    private void handleMessage() throws IllegalArgumentException, IOException {
+        String stringifiedMessage = reader.readLine();
+        if (stringifiedMessage == null) {
+            throw new IllegalArgumentException("Message not specified");
+        }
+        Message message = Message.from(stringifiedMessage);
+
+        DatabaseConnection.createNewMessage(message);
+    }
+
+    // Maybe add implementation if needed to do something on log out (o_O)
     private void handleLogout() {
-    }
-
-
-    private User register(String username) {
-        boolean created = DatabaseConnection.createNewUser(username);
-        return DatabaseConnection.getUser(username);
-    }
-
-    public void sendMessage(Message message) {
-        writer.println(message);
-    }
-
-    private void sendChats() {
-        List<String> messages = List.of(
-                "Hola", "Que tal", "Baibai"
-        );
-        messages.forEach(writer::println);
-    }
-
-    private void receiveMessage(Message message) {
-//        sendMessageTo(message.getIdTo(), message);
     }
 }

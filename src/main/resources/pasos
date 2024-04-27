@@ -1,3 +1,101 @@
 Ahora mismo solo queda hacer que los mensajes y los usuarios lo reciba el fxml
 
 Hay que hacer de nuevo el cliente y el chatmanager
+
+
+
+
+package org.agc.proyecto_m06_m09.bbdd;
+
+import jakarta.persistence.*;
+
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
+@Entity
+@Table(name = "MESSAGES")
+public class Message {
+    @Id
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "MESSAGES_SEQ")
+    @SequenceGenerator(name = "MESSAGES_SEQ", sequenceName = "MESSAGES_SEQ", allocationSize = 1)
+    @Column(name = "ID", nullable = false)
+    private Long id;
+
+    @Column
+    private Long idFrom;
+
+    @Column
+    private Long idTo;
+
+    @Column(name = "MESSAGE")
+    private String message;
+
+    @Column(name = "DATE_TIME", length = 30)
+    private long dateTime;
+
+    public static Message from(String stringifiedMessage) throws IllegalArgumentException {
+        Message message = new Message();
+        Pattern pattern = Pattern.compile("Message\\{idFrom=(\\d+), idTo=(\\d+), message='(.*?)', dateTime='(\\d)'\\}");
+        Matcher matcher = pattern.matcher(stringifiedMessage);
+
+        if (matcher.find()) {
+            message.setIdFrom(Long.parseLong(matcher.group(1)));
+            message.setIdTo(Long.parseLong(matcher.group(2)));
+            message.setMessage(matcher.group(3));
+            message.setDateTime(Long.parseLong(matcher.group(4)));
+        } else {
+            throw new IllegalArgumentException("Invalid message: " + stringifiedMessage);
+        }
+
+        return message;
+    }
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public Long getIdFrom() {
+        return idFrom;
+    }
+
+    public void setIdFrom(Long idFrom) {
+        this.idFrom = idFrom;
+    }
+
+    public Long getIdTo() {
+        return idTo;
+    }
+
+    public void setIdTo(Long idTo) {
+        this.idTo = idTo;
+    }
+
+    public String getMessage() {
+        return message;
+    }
+
+    public void setMessage(String message) {
+        this.message = message;
+    }
+
+    public Long getDateTime() {
+        return dateTime;
+    }
+
+    public void setDateTime(Long dateTime) {
+        this.dateTime = dateTime;
+    }
+
+    @Override
+    public String toString() {
+        return "Message{" +
+                "idFrom=" + idFrom +
+                ", idTo=" + idTo +
+                ", message='" + message + '\'' +
+                ", dateTime='" + dateTime + '\'' +
+                '}';
+    }
+}

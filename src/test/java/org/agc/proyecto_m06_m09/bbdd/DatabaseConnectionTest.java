@@ -4,6 +4,7 @@ import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -44,7 +45,8 @@ class DatabaseConnectionTest {
     @Test
     @Disabled(insertMessage)
     void createNewUser() {
-        assertTrue(DatabaseConnection.createNewUser("Adri"));
+        DatabaseConnection.createNewUser("Adri");
+        assertNotNull(DatabaseConnection.getUser("Adri"));
     }
 
     @Test
@@ -53,7 +55,7 @@ class DatabaseConnectionTest {
         User user1 = DatabaseConnection.getUser("Alex");
         User user2 = DatabaseConnection.getUser("Adri");
 
-        assertTrue(DatabaseConnection.createNewMessage("Pepino",user2,user1, LocalDate.now()));
+        assertTrue(DatabaseConnection.createNewMessage("Pepino", user2.getId(), user1.getId(), System.currentTimeMillis()));
     }
 
     // DELETE //
