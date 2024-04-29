@@ -11,6 +11,7 @@ import javafx.scene.control.Label;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.control.TextArea;
 import javafx.scene.input.KeyCode;
+import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 import org.agc.proyecto_m06_m09.bbdd.Message;
@@ -53,15 +54,18 @@ public class ChatController {
             return;
         }
 
+        long idTo = Client.getInstance().getUser().getId() == 4 ? 6 : 4;
+
         Message message = new Message();
         message.setMessage(text);
         message.setIdFrom(Client.getInstance().getUser().getId());
-        message.setIdTo(6L); // Hardcoded value until chat management is done
+        message.setIdTo(idTo); // Switching between 2 users until chat management is done
         message.setDateTime(System.currentTimeMillis());
 
         Client.getInstance().sendMessage(message);
         messageInput.clear();
-        chatScrollPane.setVvalue(1d);
+
+        loadChatMessages();
     }
 
     @FXML
@@ -94,14 +98,18 @@ public class ChatController {
     }
 
     private void loadMessage(Message message) {
-        loadMessage(message.getMessage());
-    }
-
-    private void loadMessage(String message) {
         Platform.runLater(() -> {
-            Label messageLabel = new Label(message);
-            messageLabel.getStyleClass().add("message-bubble");
-            chatBox.getChildren().add(messageLabel);
+            HBox hbox = new HBox();
+            Label messageLabel = new Label(message.getMessage());
+            if (message.getIdFrom() == Client.getInstance().getUser().getId()) {
+                hbox.getStyleClass().add("message-right");
+                messageLabel.getStyleClass().add("message-bubble-right");
+            } else {
+                hbox.getStyleClass().add("message");
+                messageLabel.getStyleClass().add("message-bubble");
+            }
+            hbox.getChildren().add(messageLabel);
+            chatBox.getChildren().add(hbox);
         });
     }
 }

@@ -11,8 +11,25 @@
     -fx-text-fill: #ffffff;
 }
 
+.message {
+    -fx-alignment: TOP_LEFT;
+}
+
+.message-right {
+    -fx-alignment: TOP_RIGHT;
+}
+
 .message-bubble {
     -fx-background-color: #a5d6a7;
+    -fx-background-radius: 10px;
+    -fx-padding: 10px;
+    -fx-wrap-text: true;
+    -fx-text-fill: black;
+    -fx-border-radius: 10px;
+}
+
+.message-bubble-right {
+    -fx-background-color: #a5c2d6;
     -fx-background-radius: 10px;
     -fx-padding: 10px;
     -fx-wrap-text: true;
